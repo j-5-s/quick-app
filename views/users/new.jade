@@ -1,0 +1,16 @@
+div#login_wrapper
+  h1 Register
+  form#login(method='post', action='/users',class="cmxform")
+  div
+    label Email:
+      input(name='user[email]',class="field required email", value=user.email || '')
+  div
+    label Password:
+    input(name='user[password]',class="field required", value=user.password || '', type='password')    
+  div
+    label password:
+      input(name='user[password2]',class="field required", value=user.password || '', type='password')
+  div
+    input(type='submit', class="button", value='Register')
+
+

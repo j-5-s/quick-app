@@ -1,0 +1,15 @@
+div#login_wrapper
+  h1 MLSjs
+  form#login(method='post', action='/sessions')
+    div
+      label Email:
+      input(name='user[email]',class="field required email", value=user.email || '')
+    div
+      label Password:
+      input(name='user[password]',class="field required", value=user.password || '', type='password')
+    div
+      label(for='remember_me',style="display:inline") Remember me:
+      input#remember_me(type='checkbox', name='remember_me')
+    div
+      input(type='submit',class="button", value='Log In')
+      input(type='hidden', id='redirect', name='redirect')
