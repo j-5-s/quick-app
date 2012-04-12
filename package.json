@@ -5,7 +5,8 @@
   , "dependencies": {
       "express": "2.5.2"
     , "jade": ">= 0.0.1"
-    , "nodemailer": "0.3.14"
-    , "mongoose": "2.5.13"
+    , "nodemailer": ">=0.3.14"
+    , "mongoose": ">=2.5.13"
+    , "mocha": ">=1.0.1"
   }
 }
