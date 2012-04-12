@@ -1,10 +1,10 @@
 /*jshint node:true*/
-var fs                 = require("fs"), //fs = file structure
+var fs                 = require( "fs" ), //fs = file structure
 	mappingString      = "",
-	connect            = require('connect'),
-	mongoose           = require("mongoose"),
-	User               = mongoose.model("User"),
-	LoginToken         = mongoose.model("LoginToken");
+	connect            = require( 'connect' ),
+	mongoose           = require( 'mongoose' ),
+	User               = mongoose.model( 'User' , require( '../models/User' ).User ),
+	LoginToken         = mongoose.model( 'LoginToken',  require('../models/LoginToken').LoginToken);
 
 	function authenticateFromLoginToken(req, res, next) {
 		//connect to the database	
@@ -143,4 +143,40 @@ module.exports = {
 			});
 		});
 	}
+};
+
+// Provide our app with the notion of NotFound exceptions
+function NotFound(path){
+  this.name = 'NotFound';
+  if (path) {
+    Error.call(this, 'Cannot find ' + path);
+    this.path = path;
+  } else {
+    Error.call(this, 'Not Found');
+  }
+  Error.captureStackTrace(this, arguments.callee);
+}
+
+
+//error handling
+module.exports.error = function(err, req, res, next){
+
+if (err instanceof NotFound) {
+		res.render('404.jade', { 
+		status: 404, 
+		error: err,
+		title: '404 not found'
+	});
+  } else {
+	//console.log(err);
+    next(err);
+  }
+};
+
+module.exports.fiveHundred = function(err, req, res){
+    res.render('500.jade', { status: 500, error: err });
+};
+
+module.exports.fourOFour = function(req, res){
+  throw new NotFound(req.url);
 };

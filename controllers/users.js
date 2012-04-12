@@ -1,7 +1,7 @@
 /*jshint node:true*/
 var mongoose    = require( 'mongoose' ),
 	crypto      = require( 'crypto' ),
-	User        = mongoose.model( 'User' , require('../models/User').User ),
+	User        = mongoose.model( 'User' ),
 	nodemailer  = require( 'nodemailer' );
 
 
@@ -38,12 +38,14 @@ module.exports = {
 	_new: function(req, res) {
 		res.render('users/new.jade', {
 			locals: { 
-				user: new User()
+				user: new User(),
+				title: 'New User'
 			}
 		});		
 	},
 
 	create: function( req, res ) {
+		
 		function userSaveFailed(msg) {
 			msg = msg || 'Account creation failed';
 			req.flash('error', msg);
@@ -58,14 +60,19 @@ module.exports = {
 		delete req.body.user.password2;
 		var user = new User(req.body.user);
 
-
 		
 		User.find({})
-		.sort("account_id",-1)
-		.limit(1)
+		.limit(1)	
 		.run(function(err,latest_users){
-			var latest_user = latest_users[0],
+			var account_id,latest_user;
+
+			if (latest_users.length > 0) {
+				latest_user = latest_users[0];
 				account_id = latest_user.get("account_id") + 1;
+			} else {
+				account_id = 1000;
+			}
+
 
 				User.count({email:req.body.user.email}, function(err,count){
 					if (count === 0) {

@@ -31,7 +31,8 @@ module.exports = {
 	index: function(req, res) {
 		res.render('sessions/index.jade', {
 			locals: { 
-				user: new User()
+				user: new User(),
+				title: 'Login'
 			}
 		});
 	},
